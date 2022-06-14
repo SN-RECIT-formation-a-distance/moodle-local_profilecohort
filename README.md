@@ -9,7 +9,7 @@ Moodle plugin which lets admins manage cohort memberships based on users' custom
 Requirements
 ------------
 
-This plugin requires Moodle 3.10+
+This plugin requires Moodle 3.11+
 
 
 Motivation for this plugin
@@ -181,15 +181,26 @@ PHP7 Support
 Since Moodle 3.4 core, PHP7 is mandatory. We are developing and testing this plugin for PHP7 only.
 
 
+Maintainers
+-----------
+
+Ulm University\
+Communication and Information Centre (kiz)\
+Alexander Bias
+
+Bern University of Applied Sciences\
+Luca Bösch
+
+
 Copyright
 ---------
 
-Davo Smith
-Synergy Learning UK
+Davo Smith\
+Synergy Learning UK\
 www.synergy-learning.com
 
 on behalf of
 
-Ulm University
-Communication and Information Centre (kiz)
+Ulm University\
+Communication and Information Centre (kiz)\
 Alexander Bias
