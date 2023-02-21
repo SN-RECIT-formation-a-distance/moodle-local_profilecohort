@@ -28,5 +28,5 @@ $plugin->component = 'local_profilecohort';
 $plugin->version = 2021061300;
 $plugin->release = 'v3.11-r1';
 $plugin->requires = 2021051700;
-$plugin->supported = [311, 311];
+$plugin->supported = [311, 410];
 $plugin->maturity = MATURITY_STABLE;
