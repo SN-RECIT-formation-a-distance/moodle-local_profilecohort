@@ -22,32 +22,16 @@
  * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_profilecohort\field_base;
-use local_profilecohort\field_text;
+namespace local_profilecohort;
 
 defined('MOODLE_INTERNAL') || die();
-
-/**
- * Class test_profilefields
- * @copyright 2016 Davo Smith, Synergy Learning UK on behalf of Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
- * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-abstract class test_profilecohort extends \local_profilecohort\profilecohort {
-    /**
-     * Expose the results of the protected 'load_rules' function.
-     * @return field_base[]
-     */
-    public static function test_load_rules() {
-        return self::load_rules();
-    }
-}
 
 /**
  * Class local_profilecohort_testcase
  * @copyright 2016 Davo Smith, Synergy Learning UK on behalf of Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
  * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class local_profilecohort_testcase extends advanced_testcase {
+class rules_test extends \advanced_testcase {
 
     /** @var int[] mapping user profile field shortname => field id */
     protected $fieldids = [];
@@ -93,6 +77,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test creating a range of new rules.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_create_rules() {
         // Create a 'checkbox' rule.
@@ -166,6 +154,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test updating a rule.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_update_rule() {
         // Create a 'text' rule.
@@ -207,6 +199,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test deleting a rule.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_delete_rule() {
         // Create a 'text' rule.
@@ -241,6 +237,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test using 'update_from_form_data' to update rules.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_update_from_form_data() {
         // Create a 'text' rule + reload.
@@ -331,6 +331,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test matching users based on checkbox profile fields.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_match_checkbox() {
         global $DB;
@@ -371,6 +375,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test matching users based on menu profile fields.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_match_menu() {
         global $DB;
@@ -411,6 +419,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test matching users based on text profile fields.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_match_text() {
         global $DB;
@@ -493,6 +505,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test updating the cohort membership for all users.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_update_all_cohort_memberships() {
         global $DB, $CFG;
@@ -524,7 +540,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule2->save(self::TABLENAME);
 
         // Update the cohorts from the rules.
-        $manager = new \local_profilecohort\profilecohort();
+        $manager = new profilecohort();
         $manager->update_all_cohorts_from_rules();
 
         // Check the user has been added to the matched cohort.
@@ -539,7 +555,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule2->save(self::TABLENAME);
 
         // Update the cohorts from the rules.
-        $manager = new \local_profilecohort\profilecohort();
+        $manager = new profilecohort();
         $manager->update_all_cohorts_from_rules();
 
         // Check the cohorts have been updated, as expected.
@@ -551,6 +567,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test updating the cohort membership for a single user.
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_update_cohort_membership() {
         global $DB, $CFG;
@@ -582,7 +602,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule2->save(self::TABLENAME);
 
         // Update the cohorts from the rules.
-        \local_profilecohort\profilecohort::set_cohorts_from_profile(null, $user1->id);
+        profilecohort::set_cohorts_from_profile(null, $user1->id);
 
         // Check the user has been added to the matched cohort.
         $this->assertTrue(cohort_is_member($this->cohortids[0], $user1->id));
@@ -596,7 +616,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule2->save(self::TABLENAME);
 
         // Update the cohorts from the rules.
-        \local_profilecohort\profilecohort::set_cohorts_from_profile(null, $user1->id);
+        profilecohort::set_cohorts_from_profile(null, $user1->id);
 
         // Check the cohorts have been updated, as expected.
         $this->assertTrue(cohort_is_member($this->cohortids[0], $user1->id));
@@ -607,6 +627,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test combining rules together using 'and'
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_and_rules() {
         global $DB;
@@ -671,9 +695,9 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule4->save(self::TABLENAME);
 
         // Process the rules to get the new cohortids.
-        $user1cohortids = \local_profilecohort\profilecohort::get_mapped_value($user1->id, true);
-        $user2cohortids = \local_profilecohort\profilecohort::get_mapped_value($user2->id, true);
-        $user3cohortids = \local_profilecohort\profilecohort::get_mapped_value($user3->id, true);
+        $user1cohortids = profilecohort::get_mapped_value($user1->id, true);
+        $user2cohortids = profilecohort::get_mapped_value($user2->id, true);
+        $user3cohortids = profilecohort::get_mapped_value($user3->id, true);
 
         // User1 should match rule 1, 2 + 3 (cohort 0) and rule 4 (cohort 3) - but not cohort 1 or 2 (from rules 2 + 3).
         $this->assertEquals([$this->cohortids[0], $this->cohortids[3]], $user1cohortids);
@@ -685,7 +709,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $this->assertEquals([$this->cohortids[3]], $user3cohortids);
 
         // Execute all rules, to check cohort membership is updated correctly.
-        $manager = new \local_profilecohort\profilecohort();
+        $manager = new profilecohort();
         $manager->update_all_cohorts_from_rules();
 
         // Check the cohorts have been updated, as expected.
@@ -707,6 +731,10 @@ class local_profilecohort_testcase extends advanced_testcase {
 
     /**
      * Test combining rules together using 'and' where the _last_ rule has the 'andnextrule' flag set
+     *
+     * This test does not test a particular class or function.
+     * It is adopted from block_html and does not have a coverage tag there either. Thus, we set coversNothing.
+     * @coversNothing
      */
     public function test_and_rules_ending_in_and() {
         global $DB;
@@ -744,8 +772,8 @@ class local_profilecohort_testcase extends advanced_testcase {
         $rule2->save(self::TABLENAME);
 
         // Process the rules to get the new cohortids.
-        $user1cohortids = \local_profilecohort\profilecohort::get_mapped_value($user1->id, true);
-        $user2cohortids = \local_profilecohort\profilecohort::get_mapped_value($user2->id, true);
+        $user1cohortids = profilecohort::get_mapped_value($user1->id, true);
+        $user2cohortids = profilecohort::get_mapped_value($user2->id, true);
 
         // User1 should match rule 1 + 2 (cohort 0).
         $this->assertEquals([$this->cohortids[0]], $user1cohortids);
@@ -754,7 +782,7 @@ class local_profilecohort_testcase extends advanced_testcase {
         $this->assertEquals([], $user2cohortids);
 
         // Execute all rules, to check cohort membership is updated correctly.
-        $manager = new \local_profilecohort\profilecohort();
+        $manager = new profilecohort();
         $manager->update_all_cohorts_from_rules();
 
         // Check the cohorts have been updated, as expected.
@@ -769,3 +797,19 @@ class local_profilecohort_testcase extends advanced_testcase {
         $this->assertFalse(cohort_is_member($this->cohortids[3], $user2->id));
     }
 }
+
+/**
+ * Class test_profilefields
+ * @copyright 2016 Davo Smith, Synergy Learning UK on behalf of Alexander Bias, Ulm University <alexander.bias@uni-ulm.de>
+ * @license http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+abstract class test_profilecohort extends profilecohort {
+    /**
+     * Expose the results of the protected 'load_rules' function.
+     * @return field_base[]
+     */
+    public static function test_load_rules() {
+        return self::load_rules();
+    }
+}
+
