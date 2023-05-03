@@ -125,7 +125,7 @@ class profilecohort extends profilefields {
         foreach ($users as $user) {
             if ($user->cohortid != $lastcohortid) {
                 if ($lastcohortid) {
-                    $list .= $this->output_members_entry($lastcohortname, $cohortmembers);
+                    $list .= $this->output_members_entry($lastcohortname, $cohortmembers, $lastcohortid);
                 }
                 $cohortmembers = [];
                 $lastcohortid = $user->cohortid;
@@ -137,11 +137,10 @@ class profilecohort extends profilefields {
             }
         }
         if ($lastcohortid) {
-            $list .= $this->output_members_entry($lastcohortname, $cohortmembers);
+            $list .= $this->output_members_entry($lastcohortname, $cohortmembers, $lastcohortid);
         }
 
-        $out .= html_writer::div($list, '', ['id' => 'profilecohort-cohortlist', 'role' => 'tablist',
-                                             'aria-multiselectable' => 'true']);
+        $out .= html_writer::div($list, '', ['class' => 'accordion', 'id' => 'profilecohort-cohortlist']);
 
         return $out;
     }
@@ -150,32 +149,48 @@ class profilecohort extends profilefields {
      * Render a cohortlist entry for output_members().
      * @param string $cohortname
      * @param string[] $cohortmembers
+     * @param int $lastcohortid
      * @return string
      */
-    private function output_members_entry($cohortname, $cohortmembers) {
+    private function output_members_entry($cohortname, $cohortmembers, $lastcohortid) {
         $out = '';
 
-        // Create HTML element ID from cohortname.
-        $id = 'profilecohort-cohortlist-'.preg_replace('/\W+/', '', strtolower($cohortname));
+        // Create HTML element ID from the last cohortid.
+        $id = 'profilecohort-cohortlist-' . $lastcohortid;
 
         // Bootstrap collapse header.
-        $out .= html_writer::start_div('card-header', ['id' => $id.'-heading', 'role' => 'tab']);
-        $out .= html_writer::link('#'.$id, format_string($cohortname),
-                ['class' => 'collapsed', 'data-toggle' => 'collapse', 'data-parent' => '#profilecohort-cohortlist',
-                 'aria-expanded' => 'false', 'aria-controls' => $id]);
+        $out .= html_writer::start_div('card-header', ['id' => $id.'-heading']);
+        $out .= html_writer::start_tag('h2', ['class' => 'mb-0']);
+        $out .= html_writer::start_tag('button', ['class' => 'btn btn-link btn-block text-left pl-0', 'type' => 'button',
+                'data-toggle' => 'collapse', 'data-target' => '#'.$id, 'aria-expanded' => 'false', 'aria-controls' => $id]);
+        $out .= format_string($cohortname);
+        if ($cohortmembers) {
+            $out .= html_writer::tag('span', get_string('countusers', 'local_profilecohort', count($cohortmembers)),
+                    ['class' => 'badge badge-pill badge-primary ml-2']);
+        } else {
+            $out .= html_writer::tag('span', get_string('countnousers', 'local_profilecohort'),
+                    ['class' => 'badge badge-pill badge-secondary ml-2']);
+        }
+        $out .= html_writer::end_tag('button');
+        $out .= html_writer::end_tag('h2');
         $out .= html_writer::end_div();
 
         // Bootstrap collapse content.
         if ($cohortmembers) {
             $content = '';
             foreach ($cohortmembers as $cohortmember) {
-                $content .= html_writer::tag('li', $cohortmember);
+                $content .= html_writer::start_tag('li');
+                $content .= html_writer::tag('i', '', ['class' => 'fa fa-user pr-2']);
+                $content .= $cohortmember;
+                $content .= html_writer::end_tag('li');
             }
-            $content = html_writer::tag('ul', $content);
+            $content = html_writer::tag('ul', $content, ['class' => 'list-unstyled mb-0']);
         } else {
             $content = get_string('nousers', 'local_profilecohort');
         }
-        $out .= html_writer::start_div('collapse', ['id' => $id, 'role' => 'tabpanel', 'aria-labelledby' => $id.'-heading']);
+
+        $out .= html_writer::start_div('collapse', ['id' => $id, 'aria-labelledby' => $id.'-heading',
+                'data-parent' => '#profilecohort-cohortlist']);
         $out .= html_writer::div($content, 'card-body');
         $out .= html_writer::end_div();
 
@@ -309,6 +324,7 @@ class profilecohort extends profilefields {
         }
         $sql = "SELECT $fieldsql u.id
                   FROM {user} u
+                 WHERE u.deleted = 0
                  ORDER BY u.id";
         $urs = $DB->get_recordset_sql($sql);
 
